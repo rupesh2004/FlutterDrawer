@@ -14,7 +14,8 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(
+            255, 205, 245, 194)),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
@@ -87,6 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
             const DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.green,
+                
               ),
               child: UserAccountsDrawerHeader(
                 accountName: Text(
@@ -98,9 +100,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: TextStyle(fontSize: 15),
                 ),
                 currentAccountPictureSize: Size.square(50),
+                
                 margin: EdgeInsets.all(0.5),
+                // backgroundColor: Color.fromARGB(255, 165, 255, 137),
                 currentAccountPicture: CircleAvatar(
-                    backgroundColor: Color.fromARGB(255, 165, 255, 137),
                     child: Icon(Icons.person)),
               ),
             ),
