@@ -12,22 +12,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
@@ -39,15 +25,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -55,58 +32,145 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+    final Color appBarColor = Color.fromARGB(255, 45, 210, 106);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-      title: Text("Student Login"),
-      backgroundColor: Colors.green,
-    ),
-    body: Center(
-      child: Container(
-        child: Text("Student Drawer is Invisible",
+        title: const Text("WhatsApp",
         style: TextStyle(
-          fontSize: 20,
-        ),),
+          color: Colors.white,
+        ),
+        ),
+        backgroundColor: appBarColor,  
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("This is Camera")));
+            },
+            icon: const Icon(Icons.camera_alt_outlined,color: Colors.white,),
+            tooltip: "Camera",
+          ),
+          IconButton(
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Search a perfect match")));
+            },
+            icon: Icon(Icons.search,color: Colors.white,),
+            tooltip: "Search",
+          ),
+          IconButton(
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Other Options")));
+              },
+              icon: Icon(Icons.menu,color: Colors.white,)
+              )
+        ],
       ),
-    ),
-    drawer: Drawer(
-      child: ListView(
-        padding: const EdgeInsets.all(0),
-        children: [
-          const DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.green,
-            ),
-            child: UserAccountsDrawerHeader(
-              accountName: Text(
-              "Rupesh Bhosale",style: TextStyle(fontSize: 18),
-              ), 
-              accountEmail: Text(
-                "bhpsalerupesh67@gmail.com",style: TextStyle(fontSize: 18),
-              ),
-              currentAccountPictureSize: Size.square(50),
-              margin: EdgeInsets.all(0.5),
-              currentAccountPicture: CircleAvatar(
-                backgroundColor: Color.fromARGB(255, 165, 255, 137),
-                child: Text(
-					        "R",
-					        style: TextStyle(fontSize: 30.0, color: Colors.blue),
-				        )
-              ),
+      body: Center(
+        child: Container(
+          child: Text(
+            "Student Drawer is Invisible",
+            style: TextStyle(
+              fontSize: 20,
             ),
           ),
-          ListTile(
-            leading: Icon(Icons.home),
-            title: Text('Home'),
-            onTap: (){
-              
-            },
-          )
-        ],
-        
+        ),
       ),
-    ),
-  );
+      drawer: Drawer(
+        child: ListView(
+          padding: const EdgeInsets.all(0),
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.green,
+              ),
+              child: UserAccountsDrawerHeader(
+                accountName: Text(
+                  "Rupesh Bhosale",
+                  style: TextStyle(fontSize: 15),
+                ),
+                accountEmail: Text(
+                  "bhpsalerupesh67@gmail.com",
+                  style: TextStyle(fontSize: 15),
+                ),
+                currentAccountPictureSize: Size.square(50),
+                margin: EdgeInsets.all(0.5),
+                currentAccountPicture: CircleAvatar(
+                    backgroundColor: Color.fromARGB(255, 165, 255, 137),
+                    child: Icon(Icons.person)),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.home),
+              trailing: Icon(Icons.keyboard_arrow_right),
+              title: Text('Home'),
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("This is home")));
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.person),
+              title: Text("Person"),
+              trailing: Icon(Icons.keyboard_arrow_right),
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("This is person tab")));
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.book),
+              trailing: Icon(Icons.keyboard_arrow_right),
+              title: Text("Book"),
+              onTap: () => {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("Book Space"),
+                      content: Text("Online booking is closed"),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text("Close"),
+                        ),
+                      ],
+                    );
+                  },
+                )
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.edit_document),
+              trailing: Icon(Icons.keyboard_arrow_right),
+              title: const Text(' Edit Profile '),
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("This is edit profile tab")));
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: Text("Logout"),
+              leading: Icon(Icons.logout),
+              trailing: Icon(Icons.keyboard_arrow_right),
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Logout Successfully")));
+                Navigator.pop(context);
+              },
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
