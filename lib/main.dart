@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:drawerdemo/loginPage.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({Key? key, required this.title});
 
   final String title;
 
@@ -31,54 +31,131 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-    final Color appBarColor = Color.fromARGB(255, 45, 210, 106);
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
+  final Color appBarColor = Color.fromARGB(255, 45, 210, 106);
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  void _logout() {
+    // Navigate to login page and replace the current route
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginPage()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("WhatsApp",
-        style: TextStyle(
-          color: Colors.white,
+        title: const Text(
+          "WhatsApp",
+          style: TextStyle(
+            color: Colors.white,
+          ),
         ),
-        ),
-        backgroundColor: appBarColor,  
+        backgroundColor: appBarColor,
         actions: <Widget>[
-          IconButton(
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("This is Camera")));
-            },
-            icon: const Icon(Icons.camera_alt_outlined,color: Colors.white,),
-            tooltip: "Camera",
+          Row(
+            children: [
+              IconButton(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("This is Camera")));
+                },
+                icon: const Icon(
+                  Icons.camera_alt_outlined,
+                  color: Colors.white,
+                ),
+                tooltip: "Camera",
+              ),
+              IconButton(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Search a perfect match")));
+                },
+                icon: Icon(
+                  Icons.search,
+                  color: Colors.white,
+                ),
+                tooltip: "Search",
+              ),
+              IconButton(
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Other Options")));
+                  },
+                  icon: Icon(
+                    Icons.menu,
+                    color: Colors.white,
+                  )),
+              IconButton(
+                onPressed: _logout,
+                icon: Icon(Icons.logout, color: Colors.white),
+                tooltip: "Logout",
+              ),
+            ],
           ),
-          IconButton(
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Search a perfect match")));
-            },
-            icon: Icon(Icons.search,color: Colors.white,),
-            tooltip: "Search",
-          ),
-          IconButton(
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Other Options")));
-              },
-              icon: Icon(Icons.menu,color: Colors.white,)
-              )
         ],
-      ),
-      body: Center(
-        child: Container(
-          child: Text(
-            "Student Drawer is Invisible",
-            style: TextStyle(
-              fontSize: 20,
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: [
+            Tab(
+              icon: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.chat_sharp, color: Colors.white),
+                  Text("Chats", style: TextStyle(color: Colors.white)),
+                ],
+              ),
             ),
-          ),
+            Tab(
+              icon: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.notifications_on_sharp, color: Colors.white),
+                  Text("Updates", style: TextStyle(color: Colors.white)),
+                ],
+              ),
+            ),
+            Tab(
+              icon: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.call, color: Colors.white),
+                  Text("Calls", style: TextStyle(color: Colors.white)),
+                ],
+              ),
+            ),
+          ],
         ),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          Image.asset(
+            'assets/images/chats.jpg',
+          ),
+          Image.asset(
+            'assets/images/status.jpg',
+          ),
+          Image.asset(
+            'assets/images/calls.jpg',
+          ),
+          Icon(Icons.call),
+        ],
       ),
       drawer: Drawer(
         child: ListView(
@@ -87,7 +164,6 @@ class _MyHomePageState extends State<MyHomePage> {
             const DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.green,
-                
               ),
               child: UserAccountsDrawerHeader(
                 accountName: Text(
@@ -99,11 +175,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: TextStyle(fontSize: 15),
                 ),
                 currentAccountPictureSize: Size.square(50),
-                
                 margin: EdgeInsets.all(0.5),
-                // backgroundColor: Color.fromARGB(255, 165, 255, 137),
-                currentAccountPicture: CircleAvatar(
-                    child: Icon(Icons.person)),
+                currentAccountPicture: CircleAvatar(child: Icon(Icons.person)),
               ),
             ),
             ListTile(
@@ -130,7 +203,7 @@ class _MyHomePageState extends State<MyHomePage> {
               leading: Icon(Icons.book),
               trailing: Icon(Icons.keyboard_arrow_right),
               title: Text("Book"),
-              onTap: () => {
+              onTap: () {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -147,7 +220,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ],
                     );
                   },
-                )
+                );
               },
             ),
             ListTile(
@@ -166,10 +239,11 @@ class _MyHomePageState extends State<MyHomePage> {
               trailing: Icon(Icons.keyboard_arrow_right),
               onTap: () {
                 ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Logout Successfully")));
-                Navigator.pop(context);
+                              const SnackBar(content: Text('Logged out successfully')));
+                _logout();
+                
               },
-            )
+            ),
           ],
         ),
       ),
