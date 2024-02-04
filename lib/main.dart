@@ -101,11 +101,7 @@ class _MyHomePageState extends State<MyHomePage>
                     Icons.menu,
                     color: Colors.white,
                   )),
-              IconButton(
-                onPressed: _logout,
-                icon: Icon(Icons.logout, color: Colors.white),
-                tooltip: "Logout",
-              ),
+              
             ],
           ),
         ],
